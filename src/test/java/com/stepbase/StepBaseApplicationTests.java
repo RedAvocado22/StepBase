@@ -1,4 +1,4 @@
-package com.stepbase.stepbase_api;
+package com.stepbase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

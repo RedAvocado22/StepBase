@@ -1,4 +1,4 @@
-package com.stepbase.stepbase_api;
+package com.stepbase;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
