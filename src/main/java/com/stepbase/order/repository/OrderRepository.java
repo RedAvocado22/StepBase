@@ -1,7 +1,13 @@
 package com.stepbase.order.repository;
 
 import com.stepbase.order.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+import java.util.List;
+
+public interface OrderRepository {
+    List<Order> findAll();
+    Order findById(int id);
+    List<Order> findByUserId(int userId);
+    void saveOrUpdate(Order order);
+    void delete(int id);
 }

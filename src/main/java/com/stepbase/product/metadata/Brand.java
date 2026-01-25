@@ -1,10 +1,14 @@
 package com.stepbase.product.metadata;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "brands")
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Brand {
     @Id
