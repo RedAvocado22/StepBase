@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public class UserRepository {
@@ -35,5 +36,16 @@ public class UserRepository {
             return user;
         }
         return em.merge(user);
+    }
+
+    public List<User> findAll(int offset, int limit) {
+        return em.createQuery("SELECT u FROM User u ORDER BY u.id DESC", User.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public long countAll() {
+        return em.createQuery("SELECT COUNT(u) FROM User u", Long.class).getSingleResult();
     }
 }
