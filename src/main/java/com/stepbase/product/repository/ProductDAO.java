@@ -21,8 +21,8 @@ public class ProductDAO {
         EntityManager em = emf.createEntityManager();
         try {
             // Sử dụng Native Query như ví dụ của bạn
-            String sql = "SELECT * FROM products";
-            return em.createNativeQuery(sql, Product.class).getResultList();
+            String sql = "SELECT p FROM Product p";
+            return em.createQuery(sql, Product.class).getResultList();
         } finally {
             em.close();
         }
@@ -90,8 +90,8 @@ public class ProductDAO {
     public List<Product> findByBrandId(int brandId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String sql = "SELECT * FROM products WHERE brand_id = :brandId";
-            return em.createNativeQuery(sql, Product.class)
+            String sql = "SELECT p FROM Product p WHERE p.brand.id = :brandId";
+            return em.createQuery(sql, Product.class)
                     .setParameter("brandId", brandId)
                     .getResultList();
         } finally {
@@ -105,8 +105,8 @@ public class ProductDAO {
     public List<Product> findByCategoryId(int categoryId) {
         EntityManager em = emf.createEntityManager();
         try {
-            String sql = "SELECT * FROM products WHERE category_id = :categoryId";
-            return em.createNativeQuery(sql, Product.class)
+            String sql = "SELECT p FROM Product p WHERE p.category.id = :categoryId";
+            return em.createQuery(sql, Product.class)
                     .setParameter("categoryId", categoryId)
                     .getResultList();
         } finally {
@@ -114,11 +114,14 @@ public class ProductDAO {
         }
     }
 
+    /**
+     * Tìm sản phẩm theo tên bằng JPQL
+     */
     public List<Product> findByName(String name) {
         EntityManager em = emf.createEntityManager();
         try {
-            String sql = "SELECT * FROM products WHERE name LIKE :name";
-            return em.createNativeQuery(sql, Product.class)
+            String jpql = "SELECT p FROM Product p WHERE p.name LIKE :name";
+            return em.createQuery(jpql, Product.class)
                     .setParameter("name", "%" + name + "%")
                     .getResultList();
         } finally {

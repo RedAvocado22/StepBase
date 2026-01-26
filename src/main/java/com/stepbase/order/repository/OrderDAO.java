@@ -17,13 +17,13 @@ public class OrderDAO {
     }
 
     /**
-     * Lấy danh sách tất cả đơn hàng
+     * Lấy danh sách tất cả đơn hàng bằng JPQL
      */
     public List<Order> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
-            String str="select * from [orders]";
-            return em.createNativeQuery(str, Order.class).getResultList();
+            String str="select o from Order o";
+            return em.createQuery(str, Order.class).getResultList();
         } finally {
             em.close();
         }
@@ -69,9 +69,9 @@ public class OrderDAO {
         EntityManager em = emf.createEntityManager();
         try {
             // Sử dụng tên cột "user_id" thực tế trong DB
-            String sql = "SELECT * FROM orders WHERE user_id = :userId";
-            return em.createNativeQuery(sql, Order.class)
-                    .setParameter("userId", userId)
+            String jpql = "SELECT o FROM Order o WHERE o.user.id = :uId";
+            return em.createQuery(jpql, Order.class)
+                    .setParameter("uId", userId)
                     .getResultList();
         } finally {
             em.close();

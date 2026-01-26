@@ -11,7 +11,7 @@
     <jsp:include page="/WEB-INF/views/general/navbar.jsp" />
     <div class="container">
         <h2 style="margin:10px auto;width:fit-content;">Lịch sử đơn hàng</h2>
-        <table class="table table-striped">
+        <table class="table table-striped border border-secondary-subtle">
                 <thead>
                     <tr>
                         <th>Mã đơn</th>
@@ -48,10 +48,10 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${order.paid}">
-                                        <span class="text-success">Đã thanh toán</span>
+                                        <span class="text-success fw-bold">Đã thanh toán</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="text-danger">Chưa thanh toán</span>
+                                        <span class="text-danger fw-bold">Chưa thanh toán</span>
                                     </c:otherwise>
                                 </c:choose>
                             </td>

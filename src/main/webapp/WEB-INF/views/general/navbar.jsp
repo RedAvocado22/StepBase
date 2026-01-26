@@ -10,7 +10,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/product">Sản Phẩm</a>
+                            <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/product">Sản Phẩm</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/orders/history">Lịch Sử Đơn Hàng</a>

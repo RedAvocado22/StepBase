@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -34,10 +37,31 @@ public class CartController {
     // VIEW CART
     // =====================
     @GetMapping
-    public String viewCart(HttpSession session, Model model) {
+    public String viewCart(HttpSession session,
+                           Model model,
+                           @RequestParam(name = "page", defaultValue = "1") int page) {
+        int size=2;
         Cart cart = getCart(session);
+        List<CartItem> allItems=cart.getCartItems().stream().toList();
+        int totalItems=allItems.size();
+
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+
+        if (page < 1) page = 1;
+        if (page > totalPages && totalPages > 0) page = totalPages;
+
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, totalItems);
+
+        List<CartItem> pagedItems = Collections.emptyList();
+        if (start < totalItems) {
+            pagedItems = allItems.subList(start, end);
+        }
+        model.addAttribute("cartItems", pagedItems);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageSize", size);
         model.addAttribute("cart", cart);
-        System.out.println("view card logging");
         return "cart/view";
     }
 

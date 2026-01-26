@@ -27,7 +27,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="item" items="${cart.cartItems}">
+                            <c:forEach var="item" items="${cartItems}">
                                 <tr>
                                     <td>${item.product.name}</td>
                                     <td>
@@ -38,7 +38,7 @@
                                         <form action="${pageContext.request.contextPath}/cart/update" method="post">
                                             <input type="hidden" name="productId" value="${item.product.id}">
                                             <input type="number" name="quantity" value="${item.quantity}" min="1" style="width: 60px;">
-                                            <button type="submit" class="btn-update">Cập nhật</button>
+                                            <button type="submit" class="btn btn-success btn-sm">Cập nhật</button>
                                         </form>
                                     </td>
                                     <td>
@@ -48,7 +48,7 @@
                                         <%-- Form xóa item (Controller dùng PostMapping cho /remove) --%>
                                         <form action="${pageContext.request.contextPath}/cart/remove" method="post" onsubmit="return confirm('Xóa sản phẩm này?')">
                                             <input type="hidden" name="productId" value="${item.product.id}">
-                                            <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Xóa</button>
+                                            <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -65,6 +65,32 @@
 
                         <a href="${pageContext.request.contextPath}/orders/checkout" style="padding: 10px 20px; background: orange; color: white; text-decoration: none; font-weight: bold;">THANH TOÁN</a>
                     </div>
+
+                    <!-- Thanh phân trang thủ công -->
+                    <c:if test="${totalPages >= 1}">
+                        <nav>
+                            <ul class="pagination pagination-sm">
+
+                                <!-- Nút Trước -->
+                                <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="?page=${currentPage - 1}">Trước</a>
+                                </li>
+
+                                <!-- Hiển thị các số trang -->
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="?page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <!-- Nút Sau -->
+                                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                    <a class="page-link" href="?page=${currentPage + 1}">Sau</a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </c:if>
                 </c:when>
 
                 <c:otherwise>
