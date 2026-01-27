@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -35,5 +36,34 @@ public class UserService {
         user.setGender(gender);
 
         userRepository.save(user);
+    }
+
+    public List<User> listUsers(int page, int size) {
+        int offset = Math.max(0, (page - 1) * size);
+        return userRepository.findAll(offset, size);
+    }
+
+    public long countAll() {
+        return userRepository.countAll();
+    }
+
+    @Transactional
+    public User createStaff(String fullname, String email, String password) {
+        if (fullname == null || fullname.trim().isEmpty()) {
+            throw new IllegalArgumentException("fullname must not be empty");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("email must not be empty");
+        }
+        if (userRepository.findByEmail(email.trim()).isPresent()) {
+            throw new IllegalArgumentException("email already exists");
+        }
+        User u = new User();
+        u.setFullname(fullname.trim());
+        u.setEmail(email.trim());
+        u.setPassword(password == null ? "" : password);
+        u.setIsActive(1);
+        u.setAdmin(false);
+        return userRepository.save(u);
     }
 }
