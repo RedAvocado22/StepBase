@@ -21,6 +21,20 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public User update(User user) {
+        return userRepository.update(user);
+    }
+
     @Transactional
     public void updateProfile(int userId, String fullname, String phoneNumber, int gender) {
         User user = userRepository.findById(userId)
@@ -65,5 +79,10 @@ public class UserService {
         u.setIsActive(1);
         u.setAdmin(false);
         return userRepository.save(u);
+    }
+
+    @Transactional
+    public void delete(int id) {
+        userRepository.delete(id);
     }
 }

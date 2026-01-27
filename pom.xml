@@ -16,10 +16,10 @@
 	<groupId>com.stepbase</groupId>
 	<artifactId>stepbase-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
 	<name>StepBase</name>
 	<description>Website sell shoes</description>
-
-	<packaging>war</packaging>
 
 	<properties>
 		<java.version>17</java.version>
@@ -111,6 +111,12 @@
 			<version>6.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- DB driver -->
 		<dependency>
@@ -118,6 +124,14 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<version>8.0.33</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!-- SQL Server driver (from duong branch) -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>13.2.1.jre11</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- Keep JPA annotations in code (Option A). No Hibernate, no JPA runtime. -->
@@ -173,12 +187,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.34</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -228,5 +236,6 @@
 			</plugin>
 			-->
 		</plugins>
+		<finalName>Assignment1</finalName>
 	</build>
 </project>

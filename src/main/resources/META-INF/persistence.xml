@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+<persistence-unit name="JPAs">
+    <class>com.stepbase.order.Order</class>
+    <class>com.stepbase.order.OrderItem</class>
+    <class>com.stepbase.product.Product</class>
+    <class>com.stepbase.product.metadata.Brand</class>
+    <class>com.stepbase.product.metadata.Category</class>
+    <class>com.stepbase.product.metadata.Color</class>
+    <class>com.stepbase.product.metadata.Size</class>
+    <class>com.stepbase.product.ProductVariant</class>
+    <class>com.stepbase.user.User</class>
+    <properties>
+        <!-- Driver cho SQL Server -->
+        <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+
+        <!-- URL kết nối SQL Server -->
+        <property name="jakarta.persistence.jdbc.url"
+                  value="jdbc:sqlserver://localhost:1433;databaseName=hsf302_demo;encrypt=false"/>
+
+        <!-- Tài khoản SQL Server -->
+        <property name="jakarta.persistence.jdbc.user" value="sa"/>
+        <property name="jakarta.persistence.jdbc.password" value="sa"/>
+
+        <!-- Dialect Hibernate cho SQL Server -->
+        <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+
+        <!-- Các option Hibernate -->
+        <property name="hibernate.show_sql" value="true"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+</persistence-unit>
+</persistence>

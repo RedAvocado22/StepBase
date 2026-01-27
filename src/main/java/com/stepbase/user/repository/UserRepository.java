@@ -55,7 +55,25 @@ public class UserRepository {
                 .getResultList();
     }
 
+    public List<User> findAll() {
+        return em.createQuery("SELECT u FROM User u ORDER BY u.id DESC", User.class)
+                .getResultList();
+    }
+
     public long countAll() {
         return em.createQuery("SELECT COUNT(u) FROM User u", Long.class).getSingleResult();
+    }
+
+    @Transactional
+    public User update(User user) {
+        return em.merge(user);
+    }
+
+    @Transactional
+    public void delete(int id) {
+        User user = em.find(User.class, id);
+        if (user != null) {
+            em.remove(user);
+        }
     }
 }

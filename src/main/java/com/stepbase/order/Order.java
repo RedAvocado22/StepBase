@@ -2,13 +2,19 @@ package com.stepbase.order;
 
 import com.stepbase.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Order {
     @Id
@@ -39,6 +45,8 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderItem> items;
+
 }

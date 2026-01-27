@@ -4,13 +4,17 @@ import com.stepbase.product.metadata.Brand;
 import com.stepbase.product.metadata.Category;
 import com.stepbase.product.metadata.Color;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Product {
     @Id
