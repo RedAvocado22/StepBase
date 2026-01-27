@@ -23,7 +23,8 @@ import java.util.Properties;
         "com.stepbase.user",
         "com.stepbase.product",
         "com.stepbase.order",
-        "com.stepbase.security"
+        "com.stepbase.security",
+        "com.stepbase.auth"
 })
 @PropertySource("classpath:application.properties")
 public class RootConfig {

@@ -29,6 +29,16 @@ public class UserRepository {
                 .findFirst();
     }
 
+    public Optional<User> findByResetCode(String resetCode) {
+        return em.createQuery(
+                        "SELECT u FROM User u WHERE u.resetCode = :resetCode",
+                        User.class
+                )
+                .setParameter("resetCode", resetCode)
+                .getResultStream()
+                .findFirst();
+    }
+
     @Transactional
     public User save(User user) {
         if (user.getId() <= 0) {

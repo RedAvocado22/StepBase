@@ -8,6 +8,13 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Data
 public class User {
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
