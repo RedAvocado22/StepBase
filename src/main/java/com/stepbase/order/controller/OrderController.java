@@ -19,8 +19,8 @@ public class OrderController {
     }
 
     @GetMapping("/staff/orders")
-    public String listOrders(@RequestParam(defaultValue = "1") int page,
-                             @RequestParam(defaultValue = "20") int size,
+    public String listOrders(@RequestParam(name = "page", defaultValue = "1") int page,
+                             @RequestParam(name = "size", defaultValue = "20") int size,
                              Model model) {
         List<Order> orders = orderService.listOrders(page, size);
         model.addAttribute("orders", orders);

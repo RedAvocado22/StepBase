@@ -37,9 +37,9 @@ public class UserProfileController {
 
     @PostMapping
     public String updateProfile(
-            @RequestParam String fullname,
-            @RequestParam String phoneNumber,
-            @RequestParam(required = false, defaultValue = "0") int gender,
+            @RequestParam(name = "fullname") String fullname,
+            @RequestParam(name = "phoneNumber") String phoneNumber,
+            @RequestParam(name = "gender", required = false, defaultValue = "0") int gender,
             HttpSession session,
             RedirectAttributes redirectAttrs) {
         

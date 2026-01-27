@@ -22,8 +22,8 @@ public class AdminUserController {
     }
 
     @GetMapping
-    public String listUsers(@RequestParam(defaultValue = "1") int page,
-                            @RequestParam(defaultValue = "20") int size,
+    public String listUsers(@RequestParam(name = "page", defaultValue = "1") int page,
+                            @RequestParam(name = "size", defaultValue = "20") int size,
                             Model model) {
         List<User> users = userService.listUsers(page, size);
         model.addAttribute("users", users);
@@ -39,9 +39,9 @@ public class AdminUserController {
     }
 
     @PostMapping("/add")
-    public String addStaff(@RequestParam String fullname,
-                           @RequestParam String email,
-                           @RequestParam String password,
+    public String addStaff(@RequestParam(name = "fullname") String fullname,
+                           @RequestParam(name = "email") String email,
+                           @RequestParam(name = "password") String password,
                            Model model) {
         try {
             userService.createStaff(fullname, email, password);
