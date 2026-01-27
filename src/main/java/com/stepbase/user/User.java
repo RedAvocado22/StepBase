@@ -13,6 +13,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class User {
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

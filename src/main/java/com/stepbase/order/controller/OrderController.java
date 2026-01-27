@@ -5,7 +5,6 @@ import com.stepbase.cart.CartItem;
 import com.stepbase.order.Order;
 import com.stepbase.order.OrderItem;
 import com.stepbase.order.service.OrderService;
-import com.stepbase.product.service.ProductService;
 import com.stepbase.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +14,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
-    private final ProductService productService;
     private final UserService userService;
+
     @Autowired
     public OrderController(OrderService orderService,
-                           ProductService productService,
                            UserService userService) {
-        this.orderService=orderService;
-        this.productService=productService;
-        this.userService=userService;
+        this.orderService = orderService;
+        this.userService = userService;
     }
 
     // =======================
-    // ORDER PAYMENT
+    // STAFF ORDER LISTING (from main)
+    // =======================
+    @GetMapping("/staff/orders")
+    public String listOrders(@RequestParam(name = "page", defaultValue = "1") int page,
+                             @RequestParam(name = "size", defaultValue = "20") int size,
+                             Model model) {
+        List<Order> orders = orderService.listOrders(page, size);
+        model.addAttribute("orders", orders);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("total", orderService.countAll());
+        return "order/list";
+    }
+
+    // =======================
+    // ORDER PAYMENT (from duong)
     // =======================
     @GetMapping("/payment")
     public String showPaymentForm(@RequestParam("message") boolean meString,
@@ -50,12 +64,12 @@ public class OrderController {
                                 @RequestParam("paymentSuccess") boolean success,
                                 Model model) {
         //validate input
+        int orderId;
         try {
-            int orderId=Integer.parseInt(orderIdParam);
+            orderId = Integer.parseInt(orderIdParam);
         } catch (NumberFormatException e) {
             return "redirect:/orders/payment?message=true";
         }
-        int orderId=Integer.parseInt(orderIdParam);
         //service layer
         try {
             orderService.paymentOrder(orderId, success);
@@ -69,7 +83,7 @@ public class OrderController {
     }
 
     // =======================
-    // ORDER HISTORY
+    // ORDER HISTORY (from duong)
     // =======================
     @GetMapping("/history")
     public String orderHistory(@RequestParam(name = "userId", defaultValue = "1") int userId,
@@ -78,8 +92,9 @@ public class OrderController {
                 orderService.findByUserId(userId));
         return  "orderHistory";
     }
+
     // =======================
-    // ORDER CHECKOUT
+    // ORDER CHECKOUT (from duong)
     // =======================
     @GetMapping("/checkout")
     public String showCheckoutForm(HttpSession session, Model model) {
@@ -103,7 +118,7 @@ public class OrderController {
 
         // BƯỚC 1: Lưu Order trước để lấy ID
         Order order = new Order();
-        order.setUser(userService.findById(1));
+        order.setUser(userService.findById(1).orElseThrow(() -> new RuntimeException("User not found")));
         order.setConsigneeName(name);
         order.setPhone(phone);
         order.setShippingAddress(address);
@@ -135,5 +150,4 @@ public class OrderController {
             return "redirect:/cart/errors?error=true";
         }
     }
-
 }

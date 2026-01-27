@@ -8,13 +8,14 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-// Security filter - validates auth tokens on all requests
+// Security filter - validates session-based auth on all requests
 @Component
 public class SecurityFilter implements Filter {
 
@@ -23,10 +24,18 @@ public class SecurityFilter implements Filter {
             "/api/public",
             "/api/auth/login",
             "/api/auth/register",
+            "/login",
+            "/register",
+            "/forgot-password",
+            "/reset-password",
+            "/logout",
             "/error",
             "/actuator",
             "/swagger-ui",
-            "/v3/api-docs"
+            "/v3/api-docs",
+            "/static",
+            "/css",
+            "/js"
     );
 
     @Override
@@ -56,23 +65,19 @@ public class SecurityFilter implements Filter {
             return;
         }
 
-        // Check auth header
-        String authHeader = httpRequest.getHeader("Authorization");
-        if (!isValidAuth(authHeader)) {
-            sendUnauthorizedResponse(httpResponse, "Missing or invalid authentication token");
+        // Check session-based authentication
+        HttpSession session = httpRequest.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            // Redirect to login for web pages, send 401 for API calls
+            if (requestPath.startsWith("/api/")) {
+                sendUnauthorizedResponse(httpResponse, "Authentication required");
+            } else {
+                httpResponse.sendRedirect("/login");
+            }
             return;
         }
 
-        // Validate token
-        String token = extractToken(authHeader);
-        if (!validateToken(token)) {
-            sendUnauthorizedResponse(httpResponse, "Invalid or expired token");
-            return;
-        }
-
-        // TODO: Add user context if needed
-        // request.setAttribute("userId", getUserIdFromToken(token));
-        // request.setAttribute("userRole", getUserRoleFromToken(token));
+        // User is authenticated, continue
         chain.doFilter(request, response);
     }
 
@@ -80,32 +85,6 @@ public class SecurityFilter implements Filter {
     private boolean isExcludedPath(String path) {
         return EXCLUDED_PATHS.stream()
                 .anyMatch(path::startsWith);
-    }
-
-    // Validate auth header format
-    private boolean isValidAuth(String authHeader) {
-        return authHeader != null &&
-               (authHeader.startsWith("Bearer ") || authHeader.startsWith("Token "));
-    }
-
-    // Extract token from "Bearer <token>" or "Token <token>"
-    private String extractToken(String authHeader) {
-        if (authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
-        } else if (authHeader.startsWith("Token ")) {
-            return authHeader.substring(6);
-        }
-        return authHeader;
-    }
-
-    // TODO: Implement token validation (JWT, DB lookup, etc.)
-    private boolean validateToken(String token) {
-        if (token == null || token.isEmpty()) {
-            return false;
-        }
-        // TODO: Add actual validation logic
-        // return jwtService.validateToken(token);
-        return true;
     }
 
     // Return 401 with error message
