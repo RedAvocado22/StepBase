@@ -1,6 +1,6 @@
 package com.stepbase.config;
 
-import com.hsf.assignment1.shop.model.User;
+import com.stepbase.model.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
