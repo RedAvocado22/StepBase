@@ -28,17 +28,6 @@ public class ProductController {
         return "product-list";
     }
 
-    @GetMapping("/{id}")
-    public String productDetails(@PathVariable("id") Long id, Model model) {
-        Product product = productRepository.findById(id).orElse(null);
-        if (product == null) {
-            model.addAttribute("error", "Product not found");
-            return "product-list";
-        }
-        model.addAttribute("product", product);
-        return "product-details";
-    }
-
     @GetMapping("/admin/add")
     public String showAddProduct(HttpSession session, Model model) {
         User currentUser = (User) session.getAttribute("currentUser");
