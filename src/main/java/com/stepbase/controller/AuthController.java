@@ -103,6 +103,55 @@ public class AuthController {
         return "reset-password";
     }
 
+    @GetMapping("/profile")
+    public String showProfile(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        Optional<User> userOpt = userRepository.findById(currentUser.getId());
+        if (userOpt.isPresent()) {
+            model.addAttribute("user", userOpt.get());
+            session.setAttribute("currentUser", userOpt.get());
+        }
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(@ModelAttribute User user,
+                                @RequestParam(required = false) String password,
+                                HttpSession session,
+                                Model model) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+
+        user.setId(currentUser.getId());
+        user.setRole(currentUser.getRole());
+
+        if (password == null || password.trim().isEmpty()) {
+            user.setPassword(currentUser.getPassword());
+        } else {
+            user.setPassword(password);
+        }
+
+        if (!user.getUsername().equals(currentUser.getUsername())) {
+            Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(currentUser.getId())) {
+                model.addAttribute("error", "Username already exists");
+                model.addAttribute("user", currentUser);
+                return "profile";
+            }
+        }
+
+        userRepository.save(user);
+        session.setAttribute("currentUser", user);
+        model.addAttribute("message", "Profile updated successfully");
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
 }
 
 
