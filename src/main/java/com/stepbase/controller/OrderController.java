@@ -1,8 +1,9 @@
 package com.stepbase.controller;
 
-import com.hsf.assignment1.shop.model.Order;
-import com.hsf.assignment1.shop.model.User;
-import com.hsf.assignment1.shop.repository.OrderRepository;
+
+import com.stepbase.model.Order;
+import com.stepbase.model.User;
+import com.stepbase.repository.OrderRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
