@@ -6,12 +6,13 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.hsf.assignment1.shop">
+    <context:component-scan base-package="com.stepbase">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:exclude-filter type="assignable" expression="org.springframework.web.servlet.config.annotation.WebMvcConfigurer"/>
+        <context:exclude-filter type="assignable"
+                                expression="org.springframework.web.servlet.config.annotation.WebMvcConfigurer"/>
     </context:component-scan>
 
-    <bean class="com.hsf.assignment1.shop.config.AppConfig"/>
+    <bean class="com.stepbase.config.AppConfig"/>
 
 </beans>
 

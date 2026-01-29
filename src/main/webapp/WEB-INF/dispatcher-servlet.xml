@@ -8,13 +8,13 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.hsf.assignment1.shop.controller"/>
+    <context:component-scan base-package="com.stepbase.controller"/>
 
     <mvc:annotation-driven/>
 
     <mvc:default-servlet-handler default-servlet-name="default"/>
 
-    <bean class="com.hsf.assignment1.shop.config.WebMvcConfig"/>
+    <bean class="com.stepbase.config.WebMvcConfig"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
