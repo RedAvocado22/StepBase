@@ -1,41 +1,52 @@
 package com.stepbase.config;
 
-import com.stepbase.order.repository.OrderDAO;
-import com.stepbase.order.service.OrderService;
-import com.stepbase.product.repository.ProductDAO;
-import com.stepbase.product.service.ProductService;
-import com.stepbase.user.repository.UserDAO;
-import com.stepbase.user.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@ComponentScan(basePackages = "com.stepbase")
+import javax.sql.DataSource;
+
 @Configuration
+@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class AppConfig {
 
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
     @Bean
-    public OrderDAO orderDAO() {
-        return new OrderDAO();
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+        configurer.setIgnoreUnresolvablePlaceholders(true);
+        return configurer;
     }
+
     @Bean
-    public OrderService orderService() {
-        return new OrderService();
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(dbDriver);
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
+        return dataSource;
     }
+
     @Bean
-    public UserDAO userDAO() {
-        return  new UserDAO();
-    }
-    @Bean
-    public UserService userService() {
-        return new UserService();
-    }
-    @Bean
-    public ProductDAO productDAO() {
-        return new ProductDAO();
-    }
-    @Bean
-    public ProductService productService() {
-        return new ProductService();
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }
+
+
